@@ -110,7 +110,7 @@ if __name__ == "__main__":
     #buildDirector.builder = productBuilder;
 
     # --------------------------- WRITER
-    writer: H5Writer = H5Writer('training_data.h5');
+    writer: H5Writer = H5Writer('IMG/training_data.h5');
 
     # --------------------------- prepare image data
     biL: ndarray = asarray(buildDirector.buildImgArray("binocular_img", dataToEdit='binocular_perception.h5', direction='la'));

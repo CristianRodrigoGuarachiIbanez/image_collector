@@ -1,21 +1,18 @@
-import time
 from zipfile import ZipFile
-from h5py import File, Group
+from h5py import File
 import logging
-from typing import Iterable, Iterator, List, Tuple, TypeVar, Any, Union, IO, Generator
-from io import StringIO, BytesIO, TextIOWrapper
-from csv import reader, register_dialect, QUOTE_ALL
-from pandas import read_csv, DataFrame, to_numeric
+from typing import List, TypeVar, IO, Generator
+from csv import register_dialect, QUOTE_ALL
+from pandas import read_csv, DataFrame
 from pandas.errors import EmptyDataError
 from csvDataProduct import CSVDataCollector
-from imageEditor import ImageEditor
+from IMG.imageEditor import ImageEditor
 from imageProduct import ImgArrayProduct;
 register_dialect("ownDialect", delimiter=",", skipinitialspace=True, quoting=QUOTE_ALL);
-from numpy import ndarray, asarray, array, zeros, loadtxt
-from cython import declare, locals, int, array, char
+from numpy import ndarray, asarray
+from cython import locals, int, char
 from os import getcwd, path, remove
-from os.path import isfile, isdir
-from types import GeneratorType
+from os.path import isfile
 
 
 class TrialManager:

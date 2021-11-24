@@ -12,10 +12,10 @@ class ImageEditor:
         a img with shape (None, 120,160,1)
         '''
         #bwimage: ndarray = self.__resizeImage(self.__convertImgToBW(imgArray=imgArray), scale_percent=scale)
-        grayImg: ndarray = self.__resizeImage( self.__convertImgToGS(imgArray=imgArray), scale_percent=scale)
+        grayImg: ndarray = self.resizeImage( self.convertImgToGS(imgArray=imgArray), scale_percent=scale)
         #print(grayImg.shape)
         if(equa_method == 'clahe'):
-            return self.addNewChannel(self.__claheEqualization(grayImg), new_axis=True);
+            return self.addNewChannel(self.claheEqualization(grayImg), new_axis=True);
         elif(equa_method=='equalizationHist'):
             return self.__equalizeHistagram(grayImg);
         elif(equa_method=='binary'):
@@ -36,14 +36,14 @@ class ImageEditor:
                 return imgArray.reshape((imgArray.shape[0], imgArray.shape[1], channel))
 
     def __convertImgToBW(self, imgArray: ndarray) -> ndarray:
-        grayImgArray: ndarray = self.__convertImgToGS(imgArray)
+        grayImgArray: ndarray = self.convertImgToGS(imgArray)
         return threshold(grayImgArray, 110, 255, THRESH_BINARY)[1];
     @staticmethod
-    def __convertImgToGS(imgArray: ndarray)->ndarray:
+    def convertImgToGS(imgArray: ndarray)->ndarray:
         return cvtColor(imgArray, COLOR_BGR2GRAY);
 
     @staticmethod
-    def __resizeImage(imgArray: ndarray, scale_percent: int ) -> ndarray:
+    def resizeImage(imgArray: ndarray, scale_percent: int ) -> ndarray:
 
         width: int = int(imgArray.shape[1]* scale_percent /100);
         height: int = int(imgArray.shape[0]*scale_percent/100);
@@ -52,7 +52,7 @@ class ImageEditor:
         #return imgArray.reshape([rescale_v[0], rescale_v[1]])
 
     @staticmethod
-    def __claheEqualization(imgArray: ndarray) -> ndarray:
+    def claheEqualization(imgArray: ndarray) -> ndarray:
         clahe: createCLAHE = createCLAHE(clipLimit=2.0, tileGridSize=(8,8));
         return clahe.apply(imgArray);
     @staticmethod

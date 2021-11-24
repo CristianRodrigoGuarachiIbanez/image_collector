@@ -1,18 +1,16 @@
 from csvDataProduct import CSVDataCollector
 from builderInterface import BuilderInterface
 from zipfile import ZipFile
-from io import BytesIO
-from typing import List, Tuple, Dict
+from typing import List
 from trialManager import TrialManager
 from filesExtensionClassifier import FilesExtensionClassifier
-from pandas import read_csv, DataFrame, concat
-from groundTruthProduct import GroundTruthCollector
+from pandas import DataFrame, concat
 from imageProduct import ImgArrayProduct;
-from imageEditor import ImageEditor
+from IMG.imageEditor import ImageEditor
 from numpy import ndarray
 import logging
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
-from cython import declare, locals, int, char, array, bint
+from cython import declare, locals, char, array, bint
 
 
 

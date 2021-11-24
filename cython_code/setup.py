@@ -7,5 +7,5 @@ from Cython.Distutils import build_ext
 # )
 
 setup(
-    cmdclass={'build_ext': build_ext}, ext_modules=[Extension('counter', ["counter.pyx"])]
+    cmdclass={'build_ext': build_ext}, ext_modules=[Extension('img', ["imageArrayEditor.pyx"])]
 )

@@ -5,7 +5,7 @@ import sys
 #import numpy as np
 from numpy import ndarray, asarray
 import pandas as pd
-from h5py import File, Group
+from h5py import File, Group, Dataset
 from PIL import Image as im
 from numpy import ndarray
 
@@ -18,12 +18,17 @@ class H5Writer:
 
     def saveImgDataIntoGroup(self,  imgData: L, groupName: str, datasetNames: List[str]) -> None:
         #with File(filename, 'a') as file:
-        group: Group = self.__file.create_group(groupName)
-        print('... group was created successfully!')
         assert (len(imgData) == len(datasetNames)), 'the number of data to save and data set names are no equal'
-        for i in range(len(datasetNames)):
-            group.create_dataset(datasetNames[i], data=asarray(imgData[i]), compression='gzip', compression_opts=9)
+        if (len(imgData) > 1 and len(datasetNames) > 1):
+            group: Group = self.__file.create_group(groupName)
+            print('... group was created successfully!')
+            for i in range(len(datasetNames)):
+                group.create_dataset(datasetNames[i], data=asarray(imgData[i]), compression='gzip', compression_opts=9)
+                print('... dataset was created successfully!')
+        else:
+            self.__file.create_dataset(datasetNames, data=asarray(imgData), compression='gzip', compression_opts=9)
             print('... dataset was created successfully!')
+
 
     def loadImgDataFromGroup(self, groupName: str = None, datasetNames: str = None) -> Generator:
         # with File(filename, "r") as file:
