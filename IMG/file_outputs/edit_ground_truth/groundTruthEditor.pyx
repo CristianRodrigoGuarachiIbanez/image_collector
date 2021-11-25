@@ -2,6 +2,7 @@ from numpy cimport ndarray, int32_t
 from numpy import concatenate, asarray, zeros, int32
 from libc.string cimport memset
 from libc.stdlib cimport malloc, free
+from cython import boundscheck, wraparound
 cdef class GTEditor:
     cdef:
         int32_t[:] gt_hand, gt_farm
@@ -18,11 +19,14 @@ cdef class GTEditor:
         self.length = left_hand.shape[0]
         self.gt =  <int**>malloc(left_hand.shape[0]*sizeof(int*))
         self.populate()
+        self.setNulls()
         self.fillUp()
         if(self.gt ==NULL):
             raise MemoryError()
     def __deallocate__(self):
         free(self.gt)
+    @boundscheck(False)
+    @wraparound(False)
     cdef int checkDim(self):
         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
@@ -34,6 +38,8 @@ cdef class GTEditor:
                 return 0
         else:
             return 0
+    @boundscheck(False)
+    @wraparound(False)
     cdef int checkLength(self):
         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
@@ -45,10 +51,19 @@ cdef class GTEditor:
                 return 0
         else:
             return 0
+    @boundscheck(False)
+    @wraparound(False)
     cdef void populate(self):
         cdef int i
         for i in range(self.length):
             self.gt[i] = <int*> malloc(6*sizeof(int))
+    cdef void setNulls(self):
+        cdef int i,j
+        for i in range(self.length):
+            for j in range(6):
+                self.gt[i][j]=0
+    @boundscheck(False)
+    @wraparound(False)
     cdef void fillUp(self):
         cdef int i
         for i in range(self.length):
@@ -64,6 +79,8 @@ cdef class GTEditor:
                 self.gt[i][4]=1
             elif(self.right_hand[i]==1 and self.left_farm[i]==1):
                 self.gt[i][5]=1
+    @boundscheck(False)
+    @wraparound(False)
     cdef list[list[int]] convertGTtoPython(self, int**gt):
         cdef:
             unsigned int i,j

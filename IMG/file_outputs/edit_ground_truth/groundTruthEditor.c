@@ -1241,9 +1241,9 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
 
-/* "groundTruthEditor.pyx":5
- * from libc.string cimport memset
+/* "groundTruthEditor.pyx":6
  * from libc.stdlib cimport malloc, free
+ * from cython import boundscheck, wraparound
  * cdef class GTEditor:             # <<<<<<<<<<<<<<
  *     cdef:
  *         int32_t[:] gt_hand, gt_farm
@@ -1340,9 +1340,9 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "groundTruthEditor.pyx":5
- * from libc.string cimport memset
+/* "groundTruthEditor.pyx":6
  * from libc.stdlib cimport malloc, free
+ * from cython import boundscheck, wraparound
  * cdef class GTEditor:             # <<<<<<<<<<<<<<
  *     cdef:
  *         int32_t[:] gt_hand, gt_farm
@@ -1352,6 +1352,7 @@ struct __pyx_vtabstruct_17groundTruthEditor_GTEditor {
   int (*checkDim)(struct __pyx_obj_17groundTruthEditor_GTEditor *);
   int (*checkLength)(struct __pyx_obj_17groundTruthEditor_GTEditor *);
   void (*populate)(struct __pyx_obj_17groundTruthEditor_GTEditor *);
+  void (*setNulls)(struct __pyx_obj_17groundTruthEditor_GTEditor *);
   void (*fillUp)(struct __pyx_obj_17groundTruthEditor_GTEditor *);
   PyObject *(*convertGTtoPython)(struct __pyx_obj_17groundTruthEditor_GTEditor *, int **);
 };
@@ -1557,9 +1558,6 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
-
-/* BufferIndexError.proto */
-static void __Pyx_RaiseBufferIndexError(int axis);
 
 /* ListAppend.proto */
 #if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
@@ -2141,6 +2139,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17groundTruthEditor_GTEditor *__pyx_v_self); /* proto*/
 static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17groundTruthEditor_GTEditor *__pyx_v_self); /* proto*/
 static void __pyx_f_17groundTruthEditor_8GTEditor_populate(struct __pyx_obj_17groundTruthEditor_GTEditor *__pyx_v_self); /* proto*/
+static void __pyx_f_17groundTruthEditor_8GTEditor_setNulls(struct __pyx_obj_17groundTruthEditor_GTEditor *__pyx_v_self); /* proto*/
 static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17groundTruthEditor_GTEditor *__pyx_v_self); /* proto*/
 static PyObject *__pyx_f_17groundTruthEditor_8GTEditor_convertGTtoPython(struct __pyx_obj_17groundTruthEditor_GTEditor *__pyx_v_self, int **__pyx_v_gt); /* proto*/
 static PyObject *__pyx_array_get_memview(struct __pyx_array_obj *__pyx_v_self); /* proto*/
@@ -2544,7 +2543,7 @@ static PyObject *__pyx_tuple__28;
 static PyObject *__pyx_codeobj__29;
 /* Late includes */
 
-/* "groundTruthEditor.pyx":11
+/* "groundTruthEditor.pyx":12
  *         int** gt
  *         int32_t[:] left_hand, right_hand, left_farm, right_farm
  *     def __cinit__(self, int32_t[:] left_hand, int32_t[:] right_hand, int32_t[:] left_farm, int32_t[:] right_farm):             # <<<<<<<<<<<<<<
@@ -2592,23 +2591,23 @@ static int __pyx_pw_17groundTruthEditor_8GTEditor_1__cinit__(PyObject *__pyx_v_s
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_right_hand)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 1); __PYX_ERR(0, 11, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 1); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_left_farm)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 2); __PYX_ERR(0, 11, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 2); __PYX_ERR(0, 12, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_right_farm)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 3); __PYX_ERR(0, 11, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, 3); __PYX_ERR(0, 12, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -2618,14 +2617,14 @@ static int __pyx_pw_17groundTruthEditor_8GTEditor_1__cinit__(PyObject *__pyx_v_s
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_left_hand = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_left_hand.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
-    __pyx_v_right_hand = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_right_hand.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
-    __pyx_v_left_farm = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_left_farm.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
-    __pyx_v_right_farm = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_right_farm.memview)) __PYX_ERR(0, 11, __pyx_L3_error)
+    __pyx_v_left_hand = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_left_hand.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_right_hand = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_right_hand.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_left_farm = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_left_farm.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
+    __pyx_v_right_farm = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int32_t(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_right_farm.memview)) __PYX_ERR(0, 12, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("groundTruthEditor.GTEditor.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2647,7 +2646,7 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "groundTruthEditor.pyx":12
+  /* "groundTruthEditor.pyx":13
  *         int32_t[:] left_hand, right_hand, left_farm, right_farm
  *     def __cinit__(self, int32_t[:] left_hand, int32_t[:] right_hand, int32_t[:] left_farm, int32_t[:] right_farm):
  *         self.left_hand = left_hand             # <<<<<<<<<<<<<<
@@ -2658,7 +2657,7 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   __PYX_INC_MEMVIEW(&__pyx_v_left_hand, 0);
   __pyx_v_self->left_hand = __pyx_v_left_hand;
 
-  /* "groundTruthEditor.pyx":13
+  /* "groundTruthEditor.pyx":14
  *     def __cinit__(self, int32_t[:] left_hand, int32_t[:] right_hand, int32_t[:] left_farm, int32_t[:] right_farm):
  *         self.left_hand = left_hand
  *         self.left_farm = left_farm             # <<<<<<<<<<<<<<
@@ -2669,7 +2668,7 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   __PYX_INC_MEMVIEW(&__pyx_v_left_farm, 0);
   __pyx_v_self->left_farm = __pyx_v_left_farm;
 
-  /* "groundTruthEditor.pyx":14
+  /* "groundTruthEditor.pyx":15
  *         self.left_hand = left_hand
  *         self.left_farm = left_farm
  *         self.right_hand = right_hand             # <<<<<<<<<<<<<<
@@ -2680,7 +2679,7 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   __PYX_INC_MEMVIEW(&__pyx_v_right_hand, 0);
   __pyx_v_self->right_hand = __pyx_v_right_hand;
 
-  /* "groundTruthEditor.pyx":15
+  /* "groundTruthEditor.pyx":16
  *         self.left_farm = left_farm
  *         self.right_hand = right_hand
  *         self.right_farm = right_farm             # <<<<<<<<<<<<<<
@@ -2691,7 +2690,7 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   __PYX_INC_MEMVIEW(&__pyx_v_right_farm, 0);
   __pyx_v_self->right_farm = __pyx_v_right_farm;
 
-  /* "groundTruthEditor.pyx":16
+  /* "groundTruthEditor.pyx":17
  *         self.right_hand = right_hand
  *         self.right_farm = right_farm
  *         assert(self.checkLength()), "the length of the arrays is not equal"             # <<<<<<<<<<<<<<
@@ -2702,12 +2701,12 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((struct __pyx_vtabstruct_17groundTruthEditor_GTEditor *)__pyx_v_self->__pyx_vtab)->checkLength(__pyx_v_self) != 0))) {
       PyErr_SetObject(PyExc_AssertionError, __pyx_kp_s_the_length_of_the_arrays_is_not);
-      __PYX_ERR(0, 16, __pyx_L1_error)
+      __PYX_ERR(0, 17, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "groundTruthEditor.pyx":17
+  /* "groundTruthEditor.pyx":18
  *         self.right_farm = right_farm
  *         assert(self.checkLength()), "the length of the arrays is not equal"
  *         assert(self.checkDim()), "the dimensions of the arrays are not equal"             # <<<<<<<<<<<<<<
@@ -2718,12 +2717,12 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((struct __pyx_vtabstruct_17groundTruthEditor_GTEditor *)__pyx_v_self->__pyx_vtab)->checkDim(__pyx_v_self) != 0))) {
       PyErr_SetObject(PyExc_AssertionError, __pyx_kp_s_the_dimensions_of_the_arrays_are);
-      __PYX_ERR(0, 17, __pyx_L1_error)
+      __PYX_ERR(0, 18, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "groundTruthEditor.pyx":18
+  /* "groundTruthEditor.pyx":19
  *         assert(self.checkLength()), "the length of the arrays is not equal"
  *         assert(self.checkDim()), "the dimensions of the arrays are not equal"
  *         self.length = left_hand.shape[0]             # <<<<<<<<<<<<<<
@@ -2732,35 +2731,44 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
  */
   __pyx_v_self->length = (__pyx_v_left_hand.shape[0]);
 
-  /* "groundTruthEditor.pyx":19
+  /* "groundTruthEditor.pyx":20
  *         assert(self.checkDim()), "the dimensions of the arrays are not equal"
  *         self.length = left_hand.shape[0]
  *         self.gt =  <int**>malloc(left_hand.shape[0]*sizeof(int*))             # <<<<<<<<<<<<<<
  *         self.populate()
- *         self.fillUp()
+ *         self.setNulls()
  */
   __pyx_v_self->gt = ((int **)malloc(((__pyx_v_left_hand.shape[0]) * (sizeof(int *)))));
 
-  /* "groundTruthEditor.pyx":20
+  /* "groundTruthEditor.pyx":21
  *         self.length = left_hand.shape[0]
  *         self.gt =  <int**>malloc(left_hand.shape[0]*sizeof(int*))
  *         self.populate()             # <<<<<<<<<<<<<<
+ *         self.setNulls()
  *         self.fillUp()
- *         if(self.gt ==NULL):
  */
   ((struct __pyx_vtabstruct_17groundTruthEditor_GTEditor *)__pyx_v_self->__pyx_vtab)->populate(__pyx_v_self);
 
-  /* "groundTruthEditor.pyx":21
+  /* "groundTruthEditor.pyx":22
  *         self.gt =  <int**>malloc(left_hand.shape[0]*sizeof(int*))
  *         self.populate()
+ *         self.setNulls()             # <<<<<<<<<<<<<<
+ *         self.fillUp()
+ *         if(self.gt ==NULL):
+ */
+  ((struct __pyx_vtabstruct_17groundTruthEditor_GTEditor *)__pyx_v_self->__pyx_vtab)->setNulls(__pyx_v_self);
+
+  /* "groundTruthEditor.pyx":23
+ *         self.populate()
+ *         self.setNulls()
  *         self.fillUp()             # <<<<<<<<<<<<<<
  *         if(self.gt ==NULL):
  *             raise MemoryError()
  */
   ((struct __pyx_vtabstruct_17groundTruthEditor_GTEditor *)__pyx_v_self->__pyx_vtab)->fillUp(__pyx_v_self);
 
-  /* "groundTruthEditor.pyx":22
- *         self.populate()
+  /* "groundTruthEditor.pyx":24
+ *         self.setNulls()
  *         self.fillUp()
  *         if(self.gt ==NULL):             # <<<<<<<<<<<<<<
  *             raise MemoryError()
@@ -2769,17 +2777,17 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   __pyx_t_1 = ((__pyx_v_self->gt == NULL) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "groundTruthEditor.pyx":23
+    /* "groundTruthEditor.pyx":25
  *         self.fillUp()
  *         if(self.gt ==NULL):
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  *     def __deallocate__(self):
  *         free(self.gt)
  */
-    PyErr_NoMemory(); __PYX_ERR(0, 23, __pyx_L1_error)
+    PyErr_NoMemory(); __PYX_ERR(0, 25, __pyx_L1_error)
 
-    /* "groundTruthEditor.pyx":22
- *         self.populate()
+    /* "groundTruthEditor.pyx":24
+ *         self.setNulls()
  *         self.fillUp()
  *         if(self.gt ==NULL):             # <<<<<<<<<<<<<<
  *             raise MemoryError()
@@ -2787,7 +2795,7 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
  */
   }
 
-  /* "groundTruthEditor.pyx":11
+  /* "groundTruthEditor.pyx":12
  *         int** gt
  *         int32_t[:] left_hand, right_hand, left_farm, right_farm
  *     def __cinit__(self, int32_t[:] left_hand, int32_t[:] right_hand, int32_t[:] left_farm, int32_t[:] right_farm):             # <<<<<<<<<<<<<<
@@ -2810,12 +2818,12 @@ static int __pyx_pf_17groundTruthEditor_8GTEditor___cinit__(struct __pyx_obj_17g
   return __pyx_r;
 }
 
-/* "groundTruthEditor.pyx":24
+/* "groundTruthEditor.pyx":26
  *         if(self.gt ==NULL):
  *             raise MemoryError()
  *     def __deallocate__(self):             # <<<<<<<<<<<<<<
  *         free(self.gt)
- *     cdef int checkDim(self):
+ *     @boundscheck(False)
  */
 
 /* Python wrapper */
@@ -2836,21 +2844,21 @@ static PyObject *__pyx_pf_17groundTruthEditor_8GTEditor_2__deallocate__(struct _
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__deallocate__", 0);
 
-  /* "groundTruthEditor.pyx":25
+  /* "groundTruthEditor.pyx":27
  *             raise MemoryError()
  *     def __deallocate__(self):
  *         free(self.gt)             # <<<<<<<<<<<<<<
- *     cdef int checkDim(self):
- *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
+ *     @boundscheck(False)
+ *     @wraparound(False)
  */
   free(__pyx_v_self->gt);
 
-  /* "groundTruthEditor.pyx":24
+  /* "groundTruthEditor.pyx":26
  *         if(self.gt ==NULL):
  *             raise MemoryError()
  *     def __deallocate__(self):             # <<<<<<<<<<<<<<
  *         free(self.gt)
- *     cdef int checkDim(self):
+ *     @boundscheck(False)
  */
 
   /* function exit code */
@@ -2860,9 +2868,9 @@ static PyObject *__pyx_pf_17groundTruthEditor_8GTEditor_2__deallocate__(struct _
   return __pyx_r;
 }
 
-/* "groundTruthEditor.pyx":26
- *     def __deallocate__(self):
- *         free(self.gt)
+/* "groundTruthEditor.pyx":30
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef int checkDim(self):             # <<<<<<<<<<<<<<
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
@@ -2880,67 +2888,67 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("checkDim", 0);
 
-  /* "groundTruthEditor.pyx":27
- *         free(self.gt)
+  /* "groundTruthEditor.pyx":31
+ *     @wraparound(False)
  *     cdef int checkDim(self):
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):             # <<<<<<<<<<<<<<
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
  *                 if(len(self.left_farm.shape)==len(self.right_farm.shape)):
  */
-  if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 27, __pyx_L1_error)}
-  __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_hand.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 31, __pyx_L1_error)}
+  __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_hand.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 27, __pyx_L1_error)}
-  __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->right_hand.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 31, __pyx_L1_error)}
+  __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->right_hand.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_4 = ((__pyx_t_2 == __pyx_t_3) != 0);
   if (__pyx_t_4) {
 
-    /* "groundTruthEditor.pyx":28
+    /* "groundTruthEditor.pyx":32
  *     cdef int checkDim(self):
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):             # <<<<<<<<<<<<<<
  *                 if(len(self.left_farm.shape)==len(self.right_farm.shape)):
  *                     return 1
  */
-    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 28, __pyx_L1_error)}
-    __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_hand.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 32, __pyx_L1_error)}
+    __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_hand.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 28, __pyx_L1_error)}
-    __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_farm.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 32, __pyx_L1_error)}
+    __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_farm.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 28, __pyx_L1_error)
+    __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_4 = ((__pyx_t_3 == __pyx_t_2) != 0);
     if (__pyx_t_4) {
 
-      /* "groundTruthEditor.pyx":29
+      /* "groundTruthEditor.pyx":33
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
  *                 if(len(self.left_farm.shape)==len(self.right_farm.shape)):             # <<<<<<<<<<<<<<
  *                     return 1
  *                 else:
  */
-      if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 29, __pyx_L1_error)}
-      __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_farm.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+      if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 33, __pyx_L1_error)}
+      __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->left_farm.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 29, __pyx_L1_error)
+      __pyx_t_2 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 33, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 29, __pyx_L1_error)}
-      __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->right_farm.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
+      if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 33, __pyx_L1_error)}
+      __pyx_t_1 = __Pyx_carray_to_py_Py_ssize_t(__pyx_v_self->right_farm.shape, 8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 29, __pyx_L1_error)
+      __pyx_t_3 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 33, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_4 = ((__pyx_t_2 == __pyx_t_3) != 0);
       if (__pyx_t_4) {
 
-        /* "groundTruthEditor.pyx":30
+        /* "groundTruthEditor.pyx":34
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
  *                 if(len(self.left_farm.shape)==len(self.right_farm.shape)):
  *                     return 1             # <<<<<<<<<<<<<<
@@ -2950,7 +2958,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
         __pyx_r = 1;
         goto __pyx_L0;
 
-        /* "groundTruthEditor.pyx":29
+        /* "groundTruthEditor.pyx":33
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
  *                 if(len(self.left_farm.shape)==len(self.right_farm.shape)):             # <<<<<<<<<<<<<<
@@ -2959,7 +2967,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
  */
       }
 
-      /* "groundTruthEditor.pyx":32
+      /* "groundTruthEditor.pyx":36
  *                     return 1
  *                 else:
  *                     return 0             # <<<<<<<<<<<<<<
@@ -2971,7 +2979,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
         goto __pyx_L0;
       }
 
-      /* "groundTruthEditor.pyx":28
+      /* "groundTruthEditor.pyx":32
  *     cdef int checkDim(self):
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):             # <<<<<<<<<<<<<<
@@ -2980,7 +2988,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
  */
     }
 
-    /* "groundTruthEditor.pyx":34
+    /* "groundTruthEditor.pyx":38
  *                     return 0
  *             else:
  *                 return 0             # <<<<<<<<<<<<<<
@@ -2992,8 +3000,8 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
       goto __pyx_L0;
     }
 
-    /* "groundTruthEditor.pyx":27
- *         free(self.gt)
+    /* "groundTruthEditor.pyx":31
+ *     @wraparound(False)
  *     cdef int checkDim(self):
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):             # <<<<<<<<<<<<<<
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
@@ -3001,21 +3009,21 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
  */
   }
 
-  /* "groundTruthEditor.pyx":36
+  /* "groundTruthEditor.pyx":40
  *                 return 0
  *         else:
  *             return 0             # <<<<<<<<<<<<<<
- *     cdef int checkLength(self):
- *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
+ *     @boundscheck(False)
+ *     @wraparound(False)
  */
   /*else*/ {
     __pyx_r = 0;
     goto __pyx_L0;
   }
 
-  /* "groundTruthEditor.pyx":26
- *     def __deallocate__(self):
- *         free(self.gt)
+  /* "groundTruthEditor.pyx":30
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef int checkDim(self):             # <<<<<<<<<<<<<<
  *         if(len(self.left_hand.shape)==len(self.right_hand.shape)):
  *             if(len(self.left_hand.shape)==len(self.left_farm.shape)):
@@ -3031,9 +3039,9 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkDim(struct __pyx_obj_17gro
   return __pyx_r;
 }
 
-/* "groundTruthEditor.pyx":37
- *         else:
- *             return 0
+/* "groundTruthEditor.pyx":43
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef int checkLength(self):             # <<<<<<<<<<<<<<
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
@@ -3048,43 +3056,43 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("checkLength", 0);
 
-  /* "groundTruthEditor.pyx":38
- *             return 0
+  /* "groundTruthEditor.pyx":44
+ *     @wraparound(False)
  *     cdef int checkLength(self):
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):             # <<<<<<<<<<<<<<
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
  *                 if(self.left_farm.shape[0]==self.right_farm.shape[0]):
  */
-  if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 38, __pyx_L1_error)}
-  if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 38, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 44, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 44, __pyx_L1_error)}
   __pyx_t_1 = (((__pyx_v_self->left_hand.shape[0]) == (__pyx_v_self->right_hand.shape[0])) != 0);
   if (__pyx_t_1) {
 
-    /* "groundTruthEditor.pyx":39
+    /* "groundTruthEditor.pyx":45
  *     cdef int checkLength(self):
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):             # <<<<<<<<<<<<<<
  *                 if(self.left_farm.shape[0]==self.right_farm.shape[0]):
  *                     return 1
  */
-    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 39, __pyx_L1_error)}
-    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 39, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 45, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 45, __pyx_L1_error)}
     __pyx_t_1 = (((__pyx_v_self->left_hand.shape[0]) == (__pyx_v_self->left_farm.shape[0])) != 0);
     if (__pyx_t_1) {
 
-      /* "groundTruthEditor.pyx":40
+      /* "groundTruthEditor.pyx":46
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
  *                 if(self.left_farm.shape[0]==self.right_farm.shape[0]):             # <<<<<<<<<<<<<<
  *                     return 1
  *                 else:
  */
-      if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 40, __pyx_L1_error)}
-      if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 40, __pyx_L1_error)}
+      if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 46, __pyx_L1_error)}
+      if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 46, __pyx_L1_error)}
       __pyx_t_1 = (((__pyx_v_self->left_farm.shape[0]) == (__pyx_v_self->right_farm.shape[0])) != 0);
       if (__pyx_t_1) {
 
-        /* "groundTruthEditor.pyx":41
+        /* "groundTruthEditor.pyx":47
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
  *                 if(self.left_farm.shape[0]==self.right_farm.shape[0]):
  *                     return 1             # <<<<<<<<<<<<<<
@@ -3094,7 +3102,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
         __pyx_r = 1;
         goto __pyx_L0;
 
-        /* "groundTruthEditor.pyx":40
+        /* "groundTruthEditor.pyx":46
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
  *                 if(self.left_farm.shape[0]==self.right_farm.shape[0]):             # <<<<<<<<<<<<<<
@@ -3103,7 +3111,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
  */
       }
 
-      /* "groundTruthEditor.pyx":43
+      /* "groundTruthEditor.pyx":49
  *                     return 1
  *                 else:
  *                     return 0             # <<<<<<<<<<<<<<
@@ -3115,7 +3123,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
         goto __pyx_L0;
       }
 
-      /* "groundTruthEditor.pyx":39
+      /* "groundTruthEditor.pyx":45
  *     cdef int checkLength(self):
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):             # <<<<<<<<<<<<<<
@@ -3124,7 +3132,7 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
  */
     }
 
-    /* "groundTruthEditor.pyx":45
+    /* "groundTruthEditor.pyx":51
  *                     return 0
  *             else:
  *                 return 0             # <<<<<<<<<<<<<<
@@ -3136,8 +3144,8 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
       goto __pyx_L0;
     }
 
-    /* "groundTruthEditor.pyx":38
- *             return 0
+    /* "groundTruthEditor.pyx":44
+ *     @wraparound(False)
  *     cdef int checkLength(self):
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):             # <<<<<<<<<<<<<<
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
@@ -3145,21 +3153,21 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
  */
   }
 
-  /* "groundTruthEditor.pyx":47
+  /* "groundTruthEditor.pyx":53
  *                 return 0
  *         else:
  *             return 0             # <<<<<<<<<<<<<<
- *     cdef void populate(self):
- *         cdef int i
+ *     @boundscheck(False)
+ *     @wraparound(False)
  */
   /*else*/ {
     __pyx_r = 0;
     goto __pyx_L0;
   }
 
-  /* "groundTruthEditor.pyx":37
- *         else:
- *             return 0
+  /* "groundTruthEditor.pyx":43
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef int checkLength(self):             # <<<<<<<<<<<<<<
  *         if(self.left_hand.shape[0]==self.right_hand.shape[0]):
  *             if(self.left_hand.shape[0]==self.left_farm.shape[0]):
@@ -3174,9 +3182,9 @@ static int __pyx_f_17groundTruthEditor_8GTEditor_checkLength(struct __pyx_obj_17
   return __pyx_r;
 }
 
-/* "groundTruthEditor.pyx":48
- *         else:
- *             return 0
+/* "groundTruthEditor.pyx":56
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void populate(self):             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.length):
@@ -3190,31 +3198,31 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_populate(struct __pyx_obj_17gr
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("populate", 0);
 
-  /* "groundTruthEditor.pyx":50
+  /* "groundTruthEditor.pyx":58
  *     cdef void populate(self):
  *         cdef int i
  *         for i in range(self.length):             # <<<<<<<<<<<<<<
  *             self.gt[i] = <int*> malloc(6*sizeof(int))
- *     cdef void fillUp(self):
+ *     cdef void setNulls(self):
  */
   __pyx_t_1 = __pyx_v_self->length;
   __pyx_t_2 = __pyx_t_1;
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "groundTruthEditor.pyx":51
+    /* "groundTruthEditor.pyx":59
  *         cdef int i
  *         for i in range(self.length):
  *             self.gt[i] = <int*> malloc(6*sizeof(int))             # <<<<<<<<<<<<<<
- *     cdef void fillUp(self):
- *         cdef int i
+ *     cdef void setNulls(self):
+ *         cdef int i,j
  */
     (__pyx_v_self->gt[__pyx_v_i]) = ((int *)malloc((6 * (sizeof(int)))));
   }
 
-  /* "groundTruthEditor.pyx":48
- *         else:
- *             return 0
+  /* "groundTruthEditor.pyx":56
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void populate(self):             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.length):
@@ -3224,9 +3232,72 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_populate(struct __pyx_obj_17gr
   __Pyx_RefNannyFinishContext();
 }
 
-/* "groundTruthEditor.pyx":52
+/* "groundTruthEditor.pyx":60
  *         for i in range(self.length):
  *             self.gt[i] = <int*> malloc(6*sizeof(int))
+ *     cdef void setNulls(self):             # <<<<<<<<<<<<<<
+ *         cdef int i,j
+ *         for i in range(self.length):
+ */
+
+static void __pyx_f_17groundTruthEditor_8GTEditor_setNulls(struct __pyx_obj_17groundTruthEditor_GTEditor *__pyx_v_self) {
+  int __pyx_v_i;
+  int __pyx_v_j;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_t_4;
+  __Pyx_RefNannySetupContext("setNulls", 0);
+
+  /* "groundTruthEditor.pyx":62
+ *     cdef void setNulls(self):
+ *         cdef int i,j
+ *         for i in range(self.length):             # <<<<<<<<<<<<<<
+ *             for j in range(6):
+ *                 self.gt[i][j]=0
+ */
+  __pyx_t_1 = __pyx_v_self->length;
+  __pyx_t_2 = __pyx_t_1;
+  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
+    __pyx_v_i = __pyx_t_3;
+
+    /* "groundTruthEditor.pyx":63
+ *         cdef int i,j
+ *         for i in range(self.length):
+ *             for j in range(6):             # <<<<<<<<<<<<<<
+ *                 self.gt[i][j]=0
+ *     @boundscheck(False)
+ */
+    for (__pyx_t_4 = 0; __pyx_t_4 < 6; __pyx_t_4+=1) {
+      __pyx_v_j = __pyx_t_4;
+
+      /* "groundTruthEditor.pyx":64
+ *         for i in range(self.length):
+ *             for j in range(6):
+ *                 self.gt[i][j]=0             # <<<<<<<<<<<<<<
+ *     @boundscheck(False)
+ *     @wraparound(False)
+ */
+      ((__pyx_v_self->gt[__pyx_v_i])[__pyx_v_j]) = 0;
+    }
+  }
+
+  /* "groundTruthEditor.pyx":60
+ *         for i in range(self.length):
+ *             self.gt[i] = <int*> malloc(6*sizeof(int))
+ *     cdef void setNulls(self):             # <<<<<<<<<<<<<<
+ *         cdef int i,j
+ *         for i in range(self.length):
+ */
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+/* "groundTruthEditor.pyx":67
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void fillUp(self):             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.length):
@@ -3241,13 +3312,12 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
   int __pyx_t_4;
   Py_ssize_t __pyx_t_5;
   int __pyx_t_6;
-  int __pyx_t_7;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("fillUp", 0);
 
-  /* "groundTruthEditor.pyx":54
+  /* "groundTruthEditor.pyx":69
  *     cdef void fillUp(self):
  *         cdef int i
  *         for i in range(self.length):             # <<<<<<<<<<<<<<
@@ -3259,47 +3329,29 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "groundTruthEditor.pyx":55
+    /* "groundTruthEditor.pyx":70
  *         cdef int i
  *         for i in range(self.length):
  *             if(self.left_hand[i]==1 and self.left_farm[i]==0):             # <<<<<<<<<<<<<<
  *                 self.gt[i][0] = 1
  *             elif(self.right_hand[i]==1 and self.right_farm[i]==0):
  */
-    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 55, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 70, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_hand.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_hand.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 55, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 1) != 0);
-    if (__pyx_t_7) {
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 1) != 0);
+    if (__pyx_t_6) {
     } else {
-      __pyx_t_4 = __pyx_t_7;
+      __pyx_t_4 = __pyx_t_6;
       goto __pyx_L6_bool_binop_done;
     }
-    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 55, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 70, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_farm.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_farm.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 55, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 0) != 0);
-    __pyx_t_4 = __pyx_t_7;
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 0) != 0);
+    __pyx_t_4 = __pyx_t_6;
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "groundTruthEditor.pyx":56
+      /* "groundTruthEditor.pyx":71
  *         for i in range(self.length):
  *             if(self.left_hand[i]==1 and self.left_farm[i]==0):
  *                 self.gt[i][0] = 1             # <<<<<<<<<<<<<<
@@ -3308,7 +3360,7 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
  */
       ((__pyx_v_self->gt[__pyx_v_i])[0]) = 1;
 
-      /* "groundTruthEditor.pyx":55
+      /* "groundTruthEditor.pyx":70
  *         cdef int i
  *         for i in range(self.length):
  *             if(self.left_hand[i]==1 and self.left_farm[i]==0):             # <<<<<<<<<<<<<<
@@ -3318,47 +3370,29 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
       goto __pyx_L5;
     }
 
-    /* "groundTruthEditor.pyx":57
+    /* "groundTruthEditor.pyx":72
  *             if(self.left_hand[i]==1 and self.left_farm[i]==0):
  *                 self.gt[i][0] = 1
  *             elif(self.right_hand[i]==1 and self.right_farm[i]==0):             # <<<<<<<<<<<<<<
  *                 self.gt[i][1]=1
  *             elif(self.left_farm[i]==1 and self.left_hand[i]==0):
  */
-    if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 57, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 72, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->right_hand.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->right_hand.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 57, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_hand.data + __pyx_t_5 * __pyx_v_self->right_hand.strides[0]) ))) == 1) != 0);
-    if (__pyx_t_7) {
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_hand.data + __pyx_t_5 * __pyx_v_self->right_hand.strides[0]) ))) == 1) != 0);
+    if (__pyx_t_6) {
     } else {
-      __pyx_t_4 = __pyx_t_7;
+      __pyx_t_4 = __pyx_t_6;
       goto __pyx_L8_bool_binop_done;
     }
-    if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 57, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 72, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->right_farm.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->right_farm.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 57, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_farm.data + __pyx_t_5 * __pyx_v_self->right_farm.strides[0]) ))) == 0) != 0);
-    __pyx_t_4 = __pyx_t_7;
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_farm.data + __pyx_t_5 * __pyx_v_self->right_farm.strides[0]) ))) == 0) != 0);
+    __pyx_t_4 = __pyx_t_6;
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "groundTruthEditor.pyx":58
+      /* "groundTruthEditor.pyx":73
  *                 self.gt[i][0] = 1
  *             elif(self.right_hand[i]==1 and self.right_farm[i]==0):
  *                 self.gt[i][1]=1             # <<<<<<<<<<<<<<
@@ -3367,7 +3401,7 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
  */
       ((__pyx_v_self->gt[__pyx_v_i])[1]) = 1;
 
-      /* "groundTruthEditor.pyx":57
+      /* "groundTruthEditor.pyx":72
  *             if(self.left_hand[i]==1 and self.left_farm[i]==0):
  *                 self.gt[i][0] = 1
  *             elif(self.right_hand[i]==1 and self.right_farm[i]==0):             # <<<<<<<<<<<<<<
@@ -3377,47 +3411,29 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
       goto __pyx_L5;
     }
 
-    /* "groundTruthEditor.pyx":59
+    /* "groundTruthEditor.pyx":74
  *             elif(self.right_hand[i]==1 and self.right_farm[i]==0):
  *                 self.gt[i][1]=1
  *             elif(self.left_farm[i]==1 and self.left_hand[i]==0):             # <<<<<<<<<<<<<<
  *                 self.gt[i][2]=1
  *             elif(self.right_farm[i]==1 and self.left_hand[i]==0):
  */
-    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 59, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 74, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_farm.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_farm.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 59, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 1) != 0);
-    if (__pyx_t_7) {
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 1) != 0);
+    if (__pyx_t_6) {
     } else {
-      __pyx_t_4 = __pyx_t_7;
+      __pyx_t_4 = __pyx_t_6;
       goto __pyx_L10_bool_binop_done;
     }
-    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 59, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 74, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_hand.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_hand.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 59, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 0) != 0);
-    __pyx_t_4 = __pyx_t_7;
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 0) != 0);
+    __pyx_t_4 = __pyx_t_6;
     __pyx_L10_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "groundTruthEditor.pyx":60
+      /* "groundTruthEditor.pyx":75
  *                 self.gt[i][1]=1
  *             elif(self.left_farm[i]==1 and self.left_hand[i]==0):
  *                 self.gt[i][2]=1             # <<<<<<<<<<<<<<
@@ -3426,7 +3442,7 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
  */
       ((__pyx_v_self->gt[__pyx_v_i])[2]) = 1;
 
-      /* "groundTruthEditor.pyx":59
+      /* "groundTruthEditor.pyx":74
  *             elif(self.right_hand[i]==1 and self.right_farm[i]==0):
  *                 self.gt[i][1]=1
  *             elif(self.left_farm[i]==1 and self.left_hand[i]==0):             # <<<<<<<<<<<<<<
@@ -3436,47 +3452,29 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
       goto __pyx_L5;
     }
 
-    /* "groundTruthEditor.pyx":61
+    /* "groundTruthEditor.pyx":76
  *             elif(self.left_farm[i]==1 and self.left_hand[i]==0):
  *                 self.gt[i][2]=1
  *             elif(self.right_farm[i]==1 and self.left_hand[i]==0):             # <<<<<<<<<<<<<<
  *                 self.gt[i][3]=1
  *             elif(self.left_hand[i]==1 and self.left_farm[i]==1):
  */
-    if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 61, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->right_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 76, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->right_farm.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->right_farm.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 61, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_farm.data + __pyx_t_5 * __pyx_v_self->right_farm.strides[0]) ))) == 1) != 0);
-    if (__pyx_t_7) {
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_farm.data + __pyx_t_5 * __pyx_v_self->right_farm.strides[0]) ))) == 1) != 0);
+    if (__pyx_t_6) {
     } else {
-      __pyx_t_4 = __pyx_t_7;
+      __pyx_t_4 = __pyx_t_6;
       goto __pyx_L12_bool_binop_done;
     }
-    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 61, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 76, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_hand.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_hand.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 61, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 0) != 0);
-    __pyx_t_4 = __pyx_t_7;
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 0) != 0);
+    __pyx_t_4 = __pyx_t_6;
     __pyx_L12_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "groundTruthEditor.pyx":62
+      /* "groundTruthEditor.pyx":77
  *                 self.gt[i][2]=1
  *             elif(self.right_farm[i]==1 and self.left_hand[i]==0):
  *                 self.gt[i][3]=1             # <<<<<<<<<<<<<<
@@ -3485,7 +3483,7 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
  */
       ((__pyx_v_self->gt[__pyx_v_i])[3]) = 1;
 
-      /* "groundTruthEditor.pyx":61
+      /* "groundTruthEditor.pyx":76
  *             elif(self.left_farm[i]==1 and self.left_hand[i]==0):
  *                 self.gt[i][2]=1
  *             elif(self.right_farm[i]==1 and self.left_hand[i]==0):             # <<<<<<<<<<<<<<
@@ -3495,47 +3493,29 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
       goto __pyx_L5;
     }
 
-    /* "groundTruthEditor.pyx":63
+    /* "groundTruthEditor.pyx":78
  *             elif(self.right_farm[i]==1 and self.left_hand[i]==0):
  *                 self.gt[i][3]=1
  *             elif(self.left_hand[i]==1 and self.left_farm[i]==1):             # <<<<<<<<<<<<<<
  *                 self.gt[i][4]=1
  *             elif(self.right_hand[i]==1 and self.left_farm[i]==1):
  */
-    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 63, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 78, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_hand.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_hand.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 63, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 1) != 0);
-    if (__pyx_t_7) {
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_hand.data + __pyx_t_5 * __pyx_v_self->left_hand.strides[0]) ))) == 1) != 0);
+    if (__pyx_t_6) {
     } else {
-      __pyx_t_4 = __pyx_t_7;
+      __pyx_t_4 = __pyx_t_6;
       goto __pyx_L14_bool_binop_done;
     }
-    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 63, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 78, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_farm.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_farm.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 63, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 1) != 0);
-    __pyx_t_4 = __pyx_t_7;
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 1) != 0);
+    __pyx_t_4 = __pyx_t_6;
     __pyx_L14_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "groundTruthEditor.pyx":64
+      /* "groundTruthEditor.pyx":79
  *                 self.gt[i][3]=1
  *             elif(self.left_hand[i]==1 and self.left_farm[i]==1):
  *                 self.gt[i][4]=1             # <<<<<<<<<<<<<<
@@ -3544,7 +3524,7 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
  */
       ((__pyx_v_self->gt[__pyx_v_i])[4]) = 1;
 
-      /* "groundTruthEditor.pyx":63
+      /* "groundTruthEditor.pyx":78
  *             elif(self.right_farm[i]==1 and self.left_hand[i]==0):
  *                 self.gt[i][3]=1
  *             elif(self.left_hand[i]==1 and self.left_farm[i]==1):             # <<<<<<<<<<<<<<
@@ -3554,69 +3534,51 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
       goto __pyx_L5;
     }
 
-    /* "groundTruthEditor.pyx":65
+    /* "groundTruthEditor.pyx":80
  *             elif(self.left_hand[i]==1 and self.left_farm[i]==1):
  *                 self.gt[i][4]=1
  *             elif(self.right_hand[i]==1 and self.left_farm[i]==1):             # <<<<<<<<<<<<<<
  *                 self.gt[i][5]=1
- *     cdef list[list[int]] convertGTtoPython(self, int**gt):
+ *     @boundscheck(False)
  */
-    if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 65, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->right_hand.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 80, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->right_hand.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->right_hand.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 65, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_hand.data + __pyx_t_5 * __pyx_v_self->right_hand.strides[0]) ))) == 1) != 0);
-    if (__pyx_t_7) {
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->right_hand.data + __pyx_t_5 * __pyx_v_self->right_hand.strides[0]) ))) == 1) != 0);
+    if (__pyx_t_6) {
     } else {
-      __pyx_t_4 = __pyx_t_7;
+      __pyx_t_4 = __pyx_t_6;
       goto __pyx_L16_bool_binop_done;
     }
-    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 65, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->left_farm.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 80, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = -1;
-    if (__pyx_t_5 < 0) {
-      __pyx_t_5 += __pyx_v_self->left_farm.shape[0];
-      if (unlikely(__pyx_t_5 < 0)) __pyx_t_6 = 0;
-    } else if (unlikely(__pyx_t_5 >= __pyx_v_self->left_farm.shape[0])) __pyx_t_6 = 0;
-    if (unlikely(__pyx_t_6 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_6);
-      __PYX_ERR(0, 65, __pyx_L1_error)
-    }
-    __pyx_t_7 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 1) != 0);
-    __pyx_t_4 = __pyx_t_7;
+    __pyx_t_6 = (((*((__pyx_t_5numpy_int32_t *) ( /* dim=0 */ (__pyx_v_self->left_farm.data + __pyx_t_5 * __pyx_v_self->left_farm.strides[0]) ))) == 1) != 0);
+    __pyx_t_4 = __pyx_t_6;
     __pyx_L16_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "groundTruthEditor.pyx":66
+      /* "groundTruthEditor.pyx":81
  *                 self.gt[i][4]=1
  *             elif(self.right_hand[i]==1 and self.left_farm[i]==1):
  *                 self.gt[i][5]=1             # <<<<<<<<<<<<<<
- *     cdef list[list[int]] convertGTtoPython(self, int**gt):
- *         cdef:
+ *     @boundscheck(False)
+ *     @wraparound(False)
  */
       ((__pyx_v_self->gt[__pyx_v_i])[5]) = 1;
 
-      /* "groundTruthEditor.pyx":65
+      /* "groundTruthEditor.pyx":80
  *             elif(self.left_hand[i]==1 and self.left_farm[i]==1):
  *                 self.gt[i][4]=1
  *             elif(self.right_hand[i]==1 and self.left_farm[i]==1):             # <<<<<<<<<<<<<<
  *                 self.gt[i][5]=1
- *     cdef list[list[int]] convertGTtoPython(self, int**gt):
+ *     @boundscheck(False)
  */
     }
     __pyx_L5:;
   }
 
-  /* "groundTruthEditor.pyx":52
- *         for i in range(self.length):
- *             self.gt[i] = <int*> malloc(6*sizeof(int))
+  /* "groundTruthEditor.pyx":67
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void fillUp(self):             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(self.length):
@@ -3630,9 +3592,9 @@ static void __pyx_f_17groundTruthEditor_8GTEditor_fillUp(struct __pyx_obj_17grou
   __Pyx_RefNannyFinishContext();
 }
 
-/* "groundTruthEditor.pyx":67
- *             elif(self.right_hand[i]==1 and self.left_farm[i]==1):
- *                 self.gt[i][5]=1
+/* "groundTruthEditor.pyx":84
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef list[list[int]] convertGTtoPython(self, int**gt):             # <<<<<<<<<<<<<<
  *         cdef:
  *             unsigned int i,j
@@ -3656,19 +3618,19 @@ static PyObject *__pyx_f_17groundTruthEditor_8GTEditor_convertGTtoPython(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("convertGTtoPython", 0);
 
-  /* "groundTruthEditor.pyx":70
+  /* "groundTruthEditor.pyx":87
  *         cdef:
  *             unsigned int i,j
  *         matrix = []             # <<<<<<<<<<<<<<
  * 
  *         for i in range(self.length):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_matrix = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "groundTruthEditor.pyx":72
+  /* "groundTruthEditor.pyx":89
  *         matrix = []
  * 
  *         for i in range(self.length):             # <<<<<<<<<<<<<<
@@ -3680,19 +3642,19 @@ static PyObject *__pyx_f_17groundTruthEditor_8GTEditor_convertGTtoPython(struct 
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "groundTruthEditor.pyx":73
+    /* "groundTruthEditor.pyx":90
  * 
  *         for i in range(self.length):
  *             submatrix = []             # <<<<<<<<<<<<<<
  *             for j in range(6):
  *                 submatrix.append(gt[i][j])
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_submatrix, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "groundTruthEditor.pyx":74
+    /* "groundTruthEditor.pyx":91
  *         for i in range(self.length):
  *             submatrix = []
  *             for j in range(6):             # <<<<<<<<<<<<<<
@@ -3702,30 +3664,30 @@ static PyObject *__pyx_f_17groundTruthEditor_8GTEditor_convertGTtoPython(struct 
     for (__pyx_t_5 = 0; __pyx_t_5 < 6; __pyx_t_5+=1) {
       __pyx_v_j = __pyx_t_5;
 
-      /* "groundTruthEditor.pyx":75
+      /* "groundTruthEditor.pyx":92
  *             submatrix = []
  *             for j in range(6):
  *                 submatrix.append(gt[i][j])             # <<<<<<<<<<<<<<
  *             matrix.append(submatrix)
  *         return matrix
  */
-      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_gt[__pyx_v_i])[__pyx_v_j])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_int(((__pyx_v_gt[__pyx_v_i])[__pyx_v_j])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_submatrix, __pyx_t_1); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 75, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_submatrix, __pyx_t_1); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 92, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
 
-    /* "groundTruthEditor.pyx":76
+    /* "groundTruthEditor.pyx":93
  *             for j in range(6):
  *                 submatrix.append(gt[i][j])
  *             matrix.append(submatrix)             # <<<<<<<<<<<<<<
  *         return matrix
  * 
  */
-    __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_matrix, __pyx_v_submatrix); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_matrix, __pyx_v_submatrix); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 93, __pyx_L1_error)
   }
 
-  /* "groundTruthEditor.pyx":77
+  /* "groundTruthEditor.pyx":94
  *                 submatrix.append(gt[i][j])
  *             matrix.append(submatrix)
  *         return matrix             # <<<<<<<<<<<<<<
@@ -3737,9 +3699,9 @@ static PyObject *__pyx_f_17groundTruthEditor_8GTEditor_convertGTtoPython(struct 
   __pyx_r = ((PyObject *)__pyx_v_matrix);
   goto __pyx_L0;
 
-  /* "groundTruthEditor.pyx":67
- *             elif(self.right_hand[i]==1 and self.left_farm[i]==1):
- *                 self.gt[i][5]=1
+  /* "groundTruthEditor.pyx":84
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef list[list[int]] convertGTtoPython(self, int**gt):             # <<<<<<<<<<<<<<
  *         cdef:
  *             unsigned int i,j
@@ -3758,7 +3720,7 @@ static PyObject *__pyx_f_17groundTruthEditor_8GTEditor_convertGTtoPython(struct 
   return __pyx_r;
 }
 
-/* "groundTruthEditor.pyx":79
+/* "groundTruthEditor.pyx":96
  *         return matrix
  * 
  *     def getGTArray(self):             # <<<<<<<<<<<<<<
@@ -3792,15 +3754,15 @@ static PyObject *__pyx_pf_17groundTruthEditor_8GTEditor_4getGTArray(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getGTArray", 0);
 
-  /* "groundTruthEditor.pyx":80
+  /* "groundTruthEditor.pyx":97
  * 
  *     def getGTArray(self):
  *         output = asarray(self.convertGTtoPython(self.gt))             # <<<<<<<<<<<<<<
  *         return output
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = ((struct __pyx_vtabstruct_17groundTruthEditor_GTEditor *)__pyx_v_self->__pyx_vtab)->convertGTtoPython(__pyx_v_self, __pyx_v_self->gt); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_3 = ((struct __pyx_vtabstruct_17groundTruthEditor_GTEditor *)__pyx_v_self->__pyx_vtab)->convertGTtoPython(__pyx_v_self, __pyx_v_self->gt); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -3815,13 +3777,13 @@ static PyObject *__pyx_pf_17groundTruthEditor_8GTEditor_4getGTArray(struct __pyx
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_output = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "groundTruthEditor.pyx":81
+  /* "groundTruthEditor.pyx":98
  *     def getGTArray(self):
  *         output = asarray(self.convertGTtoPython(self.gt))
  *         return output             # <<<<<<<<<<<<<<
@@ -3831,7 +3793,7 @@ static PyObject *__pyx_pf_17groundTruthEditor_8GTEditor_4getGTArray(struct __pyx
   __pyx_r = __pyx_v_output;
   goto __pyx_L0;
 
-  /* "groundTruthEditor.pyx":79
+  /* "groundTruthEditor.pyx":96
  *         return matrix
  * 
  *     def getGTArray(self):             # <<<<<<<<<<<<<<
@@ -19210,8 +19172,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 23, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 58, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 945, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 133, __pyx_L1_error)
@@ -19591,18 +19553,19 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_17groundTruthEditor_GTEditor.checkDim = (int (*)(struct __pyx_obj_17groundTruthEditor_GTEditor *))__pyx_f_17groundTruthEditor_8GTEditor_checkDim;
   __pyx_vtable_17groundTruthEditor_GTEditor.checkLength = (int (*)(struct __pyx_obj_17groundTruthEditor_GTEditor *))__pyx_f_17groundTruthEditor_8GTEditor_checkLength;
   __pyx_vtable_17groundTruthEditor_GTEditor.populate = (void (*)(struct __pyx_obj_17groundTruthEditor_GTEditor *))__pyx_f_17groundTruthEditor_8GTEditor_populate;
+  __pyx_vtable_17groundTruthEditor_GTEditor.setNulls = (void (*)(struct __pyx_obj_17groundTruthEditor_GTEditor *))__pyx_f_17groundTruthEditor_8GTEditor_setNulls;
   __pyx_vtable_17groundTruthEditor_GTEditor.fillUp = (void (*)(struct __pyx_obj_17groundTruthEditor_GTEditor *))__pyx_f_17groundTruthEditor_8GTEditor_fillUp;
   __pyx_vtable_17groundTruthEditor_GTEditor.convertGTtoPython = (PyObject *(*)(struct __pyx_obj_17groundTruthEditor_GTEditor *, int **))__pyx_f_17groundTruthEditor_8GTEditor_convertGTtoPython;
-  if (PyType_Ready(&__pyx_type_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_17groundTruthEditor_GTEditor.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_17groundTruthEditor_GTEditor.tp_dictoffset && __pyx_type_17groundTruthEditor_GTEditor.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_17groundTruthEditor_GTEditor.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_17groundTruthEditor_GTEditor.tp_dict, __pyx_vtabptr_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_GTEditor, (PyObject *)&__pyx_type_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_17groundTruthEditor_GTEditor.tp_dict, __pyx_vtabptr_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_GTEditor, (PyObject *)&__pyx_type_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_17groundTruthEditor_GTEditor) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __pyx_ptype_17groundTruthEditor_GTEditor = &__pyx_type_17groundTruthEditor_GTEditor;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -20553,12 +20516,6 @@ static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
     if (nogil)
         PyGILState_Release(state);
 #endif
-}
-
-/* BufferIndexError */
-static void __Pyx_RaiseBufferIndexError(int axis) {
-  PyErr_Format(PyExc_IndexError,
-     "Out of bounds on buffer access (axis %d)", axis);
 }
 
 /* PyDictVersioning */

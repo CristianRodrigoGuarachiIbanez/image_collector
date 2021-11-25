@@ -101,7 +101,6 @@ class IMG(object):
         :param zipFileName: string;
         :param archive: string name of the file to read
         '''
-        fuzzRatio:float;
         img:ndarray;
         self._zipfile = ZipFile(zipFileName, "r")
         zipFiles: List[str] = self._zipfile.namelist();  # names of the files in the Zip
